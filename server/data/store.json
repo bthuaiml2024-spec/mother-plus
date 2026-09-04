@@ -1,30 +1,6 @@
 {
   "mothers": [
     {
-      "id": "MOTH-5379-1778",
-      "name": "sathya",
-      "age": 38,
-      "phone": "8978765465",
-      "village": "Rural District",
-      "location": "Rural District",
-      "preferredLanguage": "en",
-      "lmpDate": "2026-02-08",
-      "eddDate": "2026-11-15",
-      "gestationalWeeks": 29,
-      "trimester": 3,
-      "pregnancyType": "Single pregnancy",
-      "bloodGroup": "Unknown",
-      "healthcareFacility": "village",
-      "healthcareWorker": "Assigned ANM / ASHA",
-      "emergencyContact": "9786264919",
-      "riskLevel": "GREEN",
-      "reminderStatus": "Active",
-      "isDemo": false,
-      "notes": "",
-      "createdAt": "2026-09-04T06:09:55.380Z",
-      "updatedAt": "2026-09-04T06:10:08.447Z"
-    },
-    {
       "id": "m-green-101",
       "name": "Priya Sharma",
       "age": 24,
@@ -41,11 +17,11 @@
       "healthcareFacility": "Vallam Primary Health Centre",
       "healthcareWorker": "Lakshmi Devi (ANM)",
       "emergencyContact": "+91 98401 99999 (Husband - Ramesh)",
-      "riskLevel": "YELLOW",
-      "reminderStatus": "Follow-up Due",
+      "riskLevel": "GREEN",
+      "reminderStatus": "Active",
       "isDemo": true,
-      "createdAt": "2026-07-21T06:09:10.387Z",
-      "updatedAt": "2026-09-04T06:15:38.946Z"
+      "createdAt": "2026-07-21T11:18:10.745Z",
+      "updatedAt": "2026-09-03T11:18:10.745Z"
     },
     {
       "id": "m-yellow-102",
@@ -67,8 +43,8 @@
       "riskLevel": "YELLOW",
       "reminderStatus": "Follow-up Due",
       "isDemo": true,
-      "createdAt": "2026-06-06T06:09:10.387Z",
-      "updatedAt": "2026-09-02T06:09:10.387Z"
+      "createdAt": "2026-06-06T11:18:10.745Z",
+      "updatedAt": "2026-09-02T11:18:10.745Z"
     },
     {
       "id": "m-red-103",
@@ -90,111 +66,12 @@
       "riskLevel": "RED",
       "reminderStatus": "URGENT ATTENTION",
       "isDemo": true,
-      "createdAt": "2026-05-07T06:09:10.387Z",
-      "updatedAt": "2026-09-04T06:09:10.387Z"
-    },
-    {
-      "id": "m-green-101",
-      "name": "Priya Sharma",
-      "age": 24,
-      "phone": "+91 98401 12345",
-      "preferredLanguage": "en",
-      "lmpDate": "2026-05-01",
-      "eddDate": "2027-02-05",
-      "gestationalWeeks": 18,
-      "trimester": 2,
-      "pregnancyType": "Single pregnancy",
-      "bloodGroup": "B+",
-      "healthcareFacility": "Vallam Primary Health Centre",
-      "healthcareWorker": "Lakshmi Devi (ANM)",
-      "emergencyContact": "+91 98401 99999 (Husband - Ramesh)",
-      "riskLevel": "GREEN",
-      "reminderStatus": "Active",
-      "createdAt": "2026-07-21T04:52:16.417Z",
-      "updatedAt": "2026-09-04T05:18:04.050Z"
-    },
-    {
-      "id": "m-yellow-102",
-      "name": "Kavitha Raman",
-      "age": 28,
-      "phone": "+91 94440 23456",
-      "preferredLanguage": "ta",
-      "lmpDate": "2026-02-20",
-      "eddDate": "2026-11-27",
-      "gestationalWeeks": 28,
-      "trimester": 3,
-      "pregnancyType": "Single pregnancy",
-      "bloodGroup": "O+",
-      "healthcareFacility": "Poonamallee Community Health Centre",
-      "healthcareWorker": "Selvi Meenakshi (ASHA)",
-      "emergencyContact": "+91 94440 88888 (Mother - Saraswathi)",
-      "riskLevel": "YELLOW",
-      "reminderStatus": "Follow-up Due",
-      "createdAt": "2026-06-06T04:52:16.417Z",
-      "updatedAt": "2026-09-02T04:52:16.417Z"
-    },
-    {
-      "id": "m-red-103",
-      "name": "Ananya Devi",
-      "age": 26,
-      "phone": "+91 97890 34567",
-      "preferredLanguage": "en",
-      "lmpDate": "2026-01-09",
-      "eddDate": "2026-10-16",
-      "gestationalWeeks": 34,
-      "trimester": 3,
-      "pregnancyType": "High risk (History of BP)",
-      "bloodGroup": "A+",
-      "healthcareFacility": "Sriperumbudur Government Hospital",
-      "healthcareWorker": "Lakshmi Devi (ANM)",
-      "emergencyContact": "+91 97890 77777 (Husband - Vijay)",
-      "riskLevel": "RED",
-      "reminderStatus": "URGENT ATTENTION",
-      "createdAt": "2026-05-07T04:52:16.417Z",
-      "updatedAt": "2026-09-04T04:52:16.417Z"
+      "createdAt": "2026-05-07T11:18:10.745Z",
+      "updatedAt": "2026-09-04T11:18:10.745Z"
     }
   ],
   "healthChecks": [
     {
-      "id": "hea-1788502538945-305",
-      "motherId": "m-green-101",
-      "motherName": "Priya Sharma",
-      "phone": "+91 98401 12345",
-      "village": "Vallam Village",
-      "location": "Vallam, Chengalpattu District",
-      "feelingGeneral": "discomfort",
-      "symptoms": [
-        "mild_swelling_feet",
-        "mild_fatigue"
-      ],
-      "level": "YELLOW",
-      "alertRequired": false,
-      "message": "FOLLOW-UP RECOMMENDED: You reported discomfort (Mild swelling in feet or ankles towards evening, Tiredness and sleepiness). While these are often manageable, you should rest, stay hydrated, and contact your ASHA/ANM healthcare worker for a routine check-up within 24 to 48 hours. If symptoms worsen, seek immediate medical care.",
-      "tamilMessage": "தொடர் கவனிப்பு பரிந்துரைக்கப்படுகிறது: நீங்கள் தெரிவித்த அறிகுறிகள் (மாலையில் கால்கள் அல்லது கணுக்காலில் லேசான வீக்கம், லேசான உடல் சோர்வு மற்றும் தூக்கமின்மை) பொதுவாக கவனிக்கப்பட வேண்டியவை. போதிய ஓய்வு மற்றும் நீர்ச்சத்து எடுத்துக்கொள்ளவும். அடுத்த 24 முதல் 48 மணி நேரத்திற்குள் உங்கள் சுகாதார பணியாளரை அணுகி ஆலோசனை பெறவும். அறிகுறிகள் அதிகமானால் உடனடியாக மருத்துவமனை செல்லவும்.",
-      "dangerSignsTextEn": null,
-      "dangerSignsTextTa": null,
-      "submittedAt": "2026-09-04T06:15:38.945Z",
-      "createdAt": "2026-09-04T06:15:38.945Z"
-    },
-    {
-      "id": "hea-1788502208446-638",
-      "motherId": "MOTH-5379-1778",
-      "motherName": "sathya",
-      "phone": "8978765465",
-      "village": "Rural District",
-      "location": "Rural District",
-      "feelingGeneral": "well",
-      "symptoms": [],
-      "level": "GREEN",
-      "alertRequired": false,
-      "message": "REASSURING UPDATE: No immediate concern identified by the configured screening rules. Keep drinking clean water, eating balanced nutritious meals, taking your prescribed supplements (Iron & Folic Acid / Calcium), and attending your regular antenatal appointments.",
-      "tamilMessage": "மகிழ்ச்சியான செய்தி: உங்கள் அறிகுறிகளில் உடனடி ஆபத்து எதுவும் கண்டறியப்படவில்லை. தொடர்ந்து சத்தான உணவு, போதிய நீர்ச்சத்து மற்றும் மருத்துவர் பரிந்துரைத்த மாத்திரைகளை (இரும்புச்சத்து & கால்சியம்) தவறாமல் உட்கொள்ளவும். வழக்கமான பரிசோதனைகளைத் தொடரவும்.",
-      "dangerSignsTextEn": null,
-      "dangerSignsTextTa": null,
-      "submittedAt": "2026-09-04T06:10:08.446Z",
-      "createdAt": "2026-09-04T06:10:08.446Z"
-    },
-    {
       "id": "hc-001",
       "motherId": "m-green-101",
       "motherName": "Priya Sharma",
@@ -203,7 +80,7 @@
       "level": "GREEN",
       "alertRequired": false,
       "message": "Routine check-in reassuring. No danger signs.",
-      "submittedAt": "2026-09-03T06:09:10.387Z"
+      "submittedAt": "2026-09-03T11:18:10.745Z"
     },
     {
       "id": "hc-002",
@@ -218,7 +95,7 @@
       "alertRequired": false,
       "flagForWorkerReview": true,
       "message": "Reported mild evening ankle swelling and lower backache.",
-      "submittedAt": "2026-09-02T06:09:10.387Z"
+      "submittedAt": "2026-09-02T11:18:10.745Z"
     },
     {
       "id": "hc-003",
@@ -234,65 +111,7 @@
       "dangerSignsTextEn": "Severe headache, Blurred vision",
       "dangerSignsTextTa": "கடுமையான தலைவலி, மங்கலான பார்வை",
       "message": "Critical pre-eclampsia danger sign warning triggered. Immediate medical escalation advised.",
-      "submittedAt": "2026-09-04T06:09:10.387Z"
-    },
-    {
-      "id": "hea-1788499084048-299",
-      "motherId": "m-green-101",
-      "motherName": "Priya Sharma",
-      "phone": "+91 98401 12345",
-      "feelingGeneral": "well",
-      "symptoms": [],
-      "level": "GREEN",
-      "alertRequired": false,
-      "message": "REASSURING UPDATE: No immediate concern identified by the configured screening rules. Keep drinking clean water, eating balanced nutritious meals, taking your prescribed supplements (Iron & Folic Acid / Calcium), and attending your regular antenatal appointments.",
-      "tamilMessage": "மகிழ்ச்சியான செய்தி: உங்கள் அறிகுறிகளில் உடனடி ஆபத்து எதுவும் கண்டறியப்படவில்லை. தொடர்ந்து சத்தான உணவு, போதிய நீர்ச்சத்து மற்றும் மருத்துவர் பரிந்துரைத்த மாத்திரைகளை (இரும்புச்சத்து & கால்சியம்) தவறாமல் உட்கொள்ளவும். வழக்கமான பரிசோதனைகளைத் தொடரவும்.",
-      "dangerSignsTextEn": null,
-      "dangerSignsTextTa": null,
-      "submittedAt": "2026-09-04T05:18:04.048Z",
-      "createdAt": "2026-09-04T05:18:04.049Z"
-    },
-    {
-      "id": "hc-001",
-      "motherId": "m-green-101",
-      "motherName": "Priya Sharma",
-      "feelingGeneral": "well",
-      "symptoms": [],
-      "level": "GREEN",
-      "alertRequired": false,
-      "message": "Routine check-in reassuring. No danger signs.",
-      "submittedAt": "2026-09-03T04:52:16.417Z"
-    },
-    {
-      "id": "hc-002",
-      "motherId": "m-yellow-102",
-      "motherName": "Kavitha Raman",
-      "feelingGeneral": "discomfort",
-      "symptoms": [
-        "mild_swelling_feet",
-        "backache_mild"
-      ],
-      "level": "YELLOW",
-      "alertRequired": false,
-      "flagForWorkerReview": true,
-      "message": "Reported mild evening ankle swelling and lower backache.",
-      "submittedAt": "2026-09-02T04:52:16.417Z"
-    },
-    {
-      "id": "hc-003",
-      "motherId": "m-red-103",
-      "motherName": "Ananya Devi",
-      "feelingGeneral": "concerning",
-      "symptoms": [
-        "severe_headache",
-        "blurred_vision"
-      ],
-      "level": "RED",
-      "alertRequired": true,
-      "dangerSignsTextEn": "Severe headache, Blurred vision",
-      "dangerSignsTextTa": "கடுமையான தலைவலி, மங்கலான பார்வை",
-      "message": "Critical pre-eclampsia danger sign warning triggered. Immediate medical escalation advised.",
-      "submittedAt": "2026-09-04T04:52:16.417Z"
+      "submittedAt": "2026-09-04T11:18:10.745Z"
     }
   ],
   "alerts": [
@@ -311,7 +130,7 @@
       ],
       "recommendedAction": "Urgent professional medical assessment recommended immediately.",
       "status": "PENDING_REVIEW",
-      "createdAt": "2026-09-04T06:09:10.387Z",
+      "createdAt": "2026-09-04T11:18:10.745Z",
       "assignedWorker": "Lakshmi Devi (ANM)",
       "isDemo": true,
       "notes": []
@@ -331,82 +150,30 @@
       ],
       "recommendedAction": "Routine follow-up within 24-48 hours. Check BP and urine albumin.",
       "status": "ACKNOWLEDGED",
-      "createdAt": "2026-09-02T06:09:10.387Z",
+      "createdAt": "2026-09-02T11:18:10.745Z",
       "assignedWorker": "Selvi Meenakshi (ASHA)",
       "isDemo": true,
       "notes": [
         {
           "author": "Selvi Meenakshi (ASHA)",
           "text": "Spoke with Kavitha over phone. Advised leg elevation while resting. Scheduled home visit tomorrow morning for BP check.",
-          "createdAt": "2026-09-03T06:09:10.387Z"
-        }
-      ]
-    },
-    {
-      "id": "alt-103-1",
-      "motherId": "m-red-103",
-      "motherName": "Ananya Devi",
-      "phone": "+91 97890 34567",
-      "gestationalWeeks": 34,
-      "riskLevel": "RED",
-      "reportedSymptoms": [
-        "Severe headache (not relieved by rest)",
-        "Blurred, dim, or double vision"
-      ],
-      "recommendedAction": "Urgent professional medical assessment recommended immediately.",
-      "status": "PENDING_REVIEW",
-      "createdAt": "2026-09-04T04:52:16.417Z",
-      "assignedWorker": "Lakshmi Devi (ANM)",
-      "notes": []
-    },
-    {
-      "id": "alt-102-1",
-      "motherId": "m-yellow-102",
-      "motherName": "Kavitha Raman",
-      "phone": "+91 94440 23456",
-      "gestationalWeeks": 28,
-      "riskLevel": "YELLOW",
-      "reportedSymptoms": [
-        "Mild swelling in feet or ankles",
-        "Mild lower back pain"
-      ],
-      "recommendedAction": "Routine follow-up within 24-48 hours. Check BP and urine albumin.",
-      "status": "ACKNOWLEDGED",
-      "createdAt": "2026-09-02T04:52:16.417Z",
-      "assignedWorker": "Selvi Meenakshi (ASHA)",
-      "notes": [
-        {
-          "author": "Selvi Meenakshi (ASHA)",
-          "text": "Spoke with Kavitha over phone. Advised leg elevation while resting. Scheduled home visit tomorrow morning for BP check.",
-          "createdAt": "2026-09-03T04:52:16.417Z"
+          "createdAt": "2026-09-03T11:18:10.745Z"
         }
       ]
     }
   ],
   "reminders": [
     {
-      "id": "rem-1788502195381-466",
-      "motherId": "MOTH-5379-1778",
-      "motherName": "sathya",
-      "phone": "8978765465",
-      "type": "ANC_APPOINTMENT",
-      "title": "Routine ANC Checkup (Week 31)",
-      "dueDateTime": "2026-09-18T06:09:55.381Z",
-      "status": "UPCOMING",
-      "notes": "Initial registration follow-up at village. Check maternal weight, BP, and hemoglobin.",
-      "createdAt": "2026-09-04T06:09:55.381Z"
-    },
-    {
       "id": "rem-101",
       "motherId": "m-green-101",
       "motherName": "Priya Sharma",
       "phone": "+91 98401 12345",
       "type": "ANC_APPOINTMENT",
       "title": "ANC Checkup #3 (20-Week Anomaly Scan)",
-      "dueDateTime": "2026-09-09T06:09:10.387Z",
+      "dueDateTime": "2026-09-09T11:18:10.745Z",
       "status": "UPCOMING",
       "notes": "Bring ultrasound prescription and Mother-Child Protection (MCP) card.",
-      "createdAt": "2026-08-30T06:09:10.387Z"
+      "createdAt": "2026-08-30T11:18:10.745Z"
     },
     {
       "id": "rem-102",
@@ -415,10 +182,10 @@
       "phone": "+91 94440 23456",
       "type": "FOLLOW_UP",
       "title": "Blood Pressure & Urine Albumin Follow-up",
-      "dueDateTime": "2026-09-05T06:09:10.387Z",
+      "dueDateTime": "2026-09-05T11:18:10.745Z",
       "status": "UPCOMING",
       "notes": "Follow-up regarding reported ankle edema.",
-      "createdAt": "2026-09-02T06:09:10.387Z"
+      "createdAt": "2026-09-02T11:18:10.745Z"
     },
     {
       "id": "rem-103",
@@ -427,13 +194,10 @@
       "phone": "+91 97890 34567",
       "type": "EMERGENCY_VISIT",
       "title": "Urgent Obstetric Referral - Sriperumbudur GH",
-      "dueDateTime": "2026-09-04T06:09:10.387Z",
-      "status": "COMPLETED",
+      "dueDateTime": "2026-09-04T11:18:10.745Z",
+      "status": "UPCOMING",
       "notes": "Emergency BP evaluation for pre-eclampsia warning signs.",
-      "createdAt": "2026-09-04T06:09:10.387Z",
-      "sentAt": "2026-09-04T06:10:00.790Z",
-      "updatedAt": "2026-09-04T06:14:10.709Z",
-      "lastTestSentAt": "2026-09-04T06:14:10.709Z"
+      "createdAt": "2026-09-04T11:18:10.745Z"
     },
     {
       "id": "rem-104",
@@ -442,10 +206,10 @@
       "phone": "+91 98401 12345",
       "type": "SUPPLEMENT",
       "title": "Daily Iron & Folic Acid (IFA) Tablet",
-      "dueDateTime": "2026-09-03T06:09:10.387Z",
+      "dueDateTime": "2026-09-03T11:18:10.745Z",
       "status": "COMPLETED",
       "notes": "Take after evening meal with water.",
-      "createdAt": "2026-08-25T06:09:10.387Z"
+      "createdAt": "2026-08-25T11:18:10.745Z"
     },
     {
       "id": "rem-105",
@@ -454,72 +218,10 @@
       "phone": "+91 94440 23456",
       "type": "ANC_APPOINTMENT",
       "title": "ANC Checkup #2 (Blood Test Review)",
-      "dueDateTime": "2026-09-01T06:09:10.387Z",
+      "dueDateTime": "2026-09-01T11:18:10.745Z",
       "status": "MISSED",
       "notes": "Mother could not attend due to transport difficulty. Rescheduled.",
-      "createdAt": "2026-08-28T06:09:10.387Z"
-    },
-    {
-      "id": "rem-101",
-      "motherId": "m-green-101",
-      "motherName": "Priya Sharma",
-      "phone": "+91 98401 12345",
-      "type": "ANC_APPOINTMENT",
-      "title": "ANC Checkup #3 (20-Week Anomaly Scan)",
-      "dueDateTime": "2026-09-09T04:52:16.417Z",
-      "status": "UPCOMING",
-      "notes": "Bring ultrasound prescription and Mother-Child Protection (MCP) card.",
-      "createdAt": "2026-08-30T04:52:16.417Z"
-    },
-    {
-      "id": "rem-102",
-      "motherId": "m-yellow-102",
-      "motherName": "Kavitha Raman",
-      "phone": "+91 94440 23456",
-      "type": "FOLLOW_UP",
-      "title": "Blood Pressure & Urine Albumin Follow-up",
-      "dueDateTime": "2026-09-05T04:52:16.417Z",
-      "status": "UPCOMING",
-      "notes": "Follow-up regarding reported ankle edema.",
-      "createdAt": "2026-09-02T04:52:16.417Z"
-    },
-    {
-      "id": "rem-103",
-      "motherId": "m-red-103",
-      "motherName": "Ananya Devi",
-      "phone": "+91 97890 34567",
-      "type": "EMERGENCY_VISIT",
-      "title": "Urgent Obstetric Referral - Sriperumbudur GH",
-      "dueDateTime": "2026-09-04T04:52:16.417Z",
-      "status": "COMPLETED",
-      "notes": "Emergency BP evaluation for pre-eclampsia warning signs.",
-      "createdAt": "2026-09-04T04:52:16.417Z",
-      "sentAt": "2026-09-04T04:53:00.911Z",
-      "updatedAt": "2026-09-04T04:53:00.911Z"
-    },
-    {
-      "id": "rem-104",
-      "motherId": "m-green-101",
-      "motherName": "Priya Sharma",
-      "phone": "+91 98401 12345",
-      "type": "SUPPLEMENT",
-      "title": "Daily Iron & Folic Acid (IFA) Tablet",
-      "dueDateTime": "2026-09-03T04:52:16.417Z",
-      "status": "COMPLETED",
-      "notes": "Take after evening meal with water.",
-      "createdAt": "2026-08-25T04:52:16.417Z"
-    },
-    {
-      "id": "rem-105",
-      "motherId": "m-yellow-102",
-      "motherName": "Kavitha Raman",
-      "phone": "+91 94440 23456",
-      "type": "ANC_APPOINTMENT",
-      "title": "ANC Checkup #2 (Blood Test Review)",
-      "dueDateTime": "2026-09-01T04:52:16.417Z",
-      "status": "MISSED",
-      "notes": "Mother could not attend due to transport difficulty. Rescheduled.",
-      "createdAt": "2026-08-28T04:52:16.417Z"
+      "createdAt": "2026-08-28T11:18:10.745Z"
     }
   ],
   "users": [

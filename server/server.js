@@ -1,9 +1,16 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 import { db } from './services/dbService.js';
 import { initCronJobs } from './jobs/cronScheduler.js';
 import { errorHandler } from './middleware/errorHandler.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const distPath = path.join(__dirname, '..', 'client', 'dist');
 
 // Route imports
 import authRoutes from './routes/authRoutes.js';
@@ -31,6 +38,18 @@ app.use((req, res, next) => {
   next();
 });
 
+// Lazy database initialization middleware (crucial for serverless cold starts)
+app.use(async (req, res, next) => {
+  try {
+    if (!db.initialized) {
+      await db.init();
+    }
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
 // Health check probe
 app.get('/api/health', (req, res) => {
   res.json({
@@ -51,10 +70,21 @@ app.use('/api/tips', tipRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/whatsapp', whatsappRoutes);
 
+// Serve static client build if present (enables single localhost URL on port 5000)
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) {
+      return next();
+    }
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+}
+
 // Global Error Handler
 app.use(errorHandler);
 
-// Initialize DB & Start Server
+// Initialize DB & Start Server for standalone environments
 async function startServer() {
   try {
     await db.init();
@@ -75,4 +105,11 @@ async function startServer() {
   }
 }
 
-startServer();
+// Automatically start server only in standalone / persistent environments (local or Render)
+const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+if (!isServerless) {
+  startServer();
+}
+
+export default app;
+export { app };

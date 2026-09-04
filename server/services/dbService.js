@@ -1,11 +1,17 @@
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 import { fileURLToPath } from 'url';
 import { getDemoData } from '../data/initialSeed.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const DATA_FILE = path.join(__dirname, '..', 'data', 'store.json');
+const BUNDLED_DATA_FILE = path.join(__dirname, '..', 'data', 'store.json');
+
+// In serverless / read-only environments (e.g., Vercel / AWS Lambda), the deployment bundle
+// is read-only. We use the writable OS temporary directory (/tmp/store.json) as fallback.
+const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+const DATA_FILE = isServerless ? path.join(os.tmpdir(), 'store.json') : BUNDLED_DATA_FILE;
 
 /**
  * Robust JSON file-backed in-memory database abstraction layer.
@@ -28,10 +34,25 @@ class DatabaseService {
   async init() {
     if (this.initialized) return;
     try {
+      if (isServerless && !fs.existsSync(DATA_FILE) && fs.existsSync(BUNDLED_DATA_FILE)) {
+        try {
+          fs.copyFileSync(BUNDLED_DATA_FILE, DATA_FILE);
+        } catch (copyErr) {
+          console.warn('Could not copy bundled store to tmp directory:', copyErr.message);
+        }
+      }
+
       if (fs.existsSync(DATA_FILE)) {
         const fileContent = fs.readFileSync(DATA_FILE, 'utf-8');
         this.data = JSON.parse(fileContent);
         // Ensure all collections exist
+        const defaultCollections = ['mothers', 'healthChecks', 'alerts', 'reminders', 'users'];
+        for (const col of defaultCollections) {
+          if (!this.data[col]) this.data[col] = [];
+        }
+      } else if (fs.existsSync(BUNDLED_DATA_FILE)) {
+        const fileContent = fs.readFileSync(BUNDLED_DATA_FILE, 'utf-8');
+        this.data = JSON.parse(fileContent);
         const defaultCollections = ['mothers', 'healthChecks', 'alerts', 'reminders', 'users'];
         for (const col of defaultCollections) {
           if (!this.data[col]) this.data[col] = [];
@@ -50,7 +71,7 @@ class DatabaseService {
     try {
       fs.writeFileSync(DATA_FILE, JSON.stringify(this.data, null, 2), 'utf-8');
     } catch (err) {
-      console.error('Failed to write database file:', err.message);
+      console.warn('Failed to persist database file to disk (in-memory state active):', err.message);
     }
   }
 

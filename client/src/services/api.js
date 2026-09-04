@@ -2,10 +2,16 @@
  * Frontend API Service for MOTHER+ REST Endpoints
  */
 
-const BASE_URL = '/api';
+// Resolves base API URL: reads environment variable VITE_API_URL if configured,
+// otherwise defaults to '/api' (handled by Vite dev proxy in local development).
+const rawBaseUrl = import.meta.env?.VITE_API_URL;
+const BASE_URL = (rawBaseUrl && rawBaseUrl.trim() !== '')
+  ? rawBaseUrl.trim().replace(/\/+$/, '')
+  : '/api';
 
 async function request(endpoint, options = {}) {
-  const url = `${BASE_URL}${endpoint}`;
+  const normalizedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const url = `${BASE_URL}${normalizedEndpoint}`;
   const headers = {
     'Content-Type': 'application/json',
     ...(options.headers || {})

@@ -44,6 +44,9 @@ export function WhatsAppPage({ onNavigate }) {
   useEffect(() => {
     loadMothers();
     loadSymptoms();
+    // Default to English and prompt for language selection immediately on opening
+    setLanguage('en');
+    showLanguageSelectionPrompt();
   }, []);
 
   const loadMothers = async () => {
@@ -52,7 +55,8 @@ export function WhatsAppPage({ onNavigate }) {
       if (res.data) {
         setMothersList(res.data);
         if (res.data.length > 0 && !selectedMother) {
-          selectMotherForChat(res.data[0]);
+          // Pre-select first mother for demo context without overriding language
+          setSelectedMother(res.data[0]);
         }
       }
     } catch (err) {
@@ -74,22 +78,49 @@ export function WhatsAppPage({ onNavigate }) {
   // Switch simulated mother profile
   const selectMotherForChat = (mother) => {
     setSelectedMother(mother);
-    if (mother?.preferredLanguage) {
-      setLanguage(mother.preferredLanguage);
-    }
-    initWelcomeChat(mother, mother?.preferredLanguage || language);
+    // Keep currently active user language
+    initWelcomeChat(mother, language);
   };
 
-  const initWelcomeChat = (mother, lang) => {
+  const showLanguageSelectionPrompt = () => {
+    setChatState('LANG_SELECT');
+    setMessages([
+      {
+        id: `msg-lang-select-${Date.now()}`,
+        sender: 'bot',
+        text: '🌸 Welcome to MOTHER+ / MOTHER+ இற்கு நல்வரவு\n\nChoose your language / மொழியைத் தேர்ந்தெடுக்கவும்:\n\n1. English\n2. தமிழ்',
+        time: getCurrentTime(),
+        quickOptions: [
+          { id: 'lang_en', label: '1. English' },
+          { id: 'lang_ta', label: '2. தமிழ்' }
+        ]
+      }
+    ]);
+  };
+
+  const handleSelectLanguage = (newLang) => {
+    setLanguage(newLang);
+    if (selectedMother) {
+      setSelectedMother((prev) => (prev ? { ...prev, preferredLanguage: newLang } : null));
+    }
+    const notice = newLang === 'ta'
+      ? 'மொழி வெற்றிகரமாக தமிழில் அமைக்கப்பட்டது 🌐'
+      : 'Language set to English successfully 🌐';
+    initWelcomeChat(selectedMother, newLang, notice);
+  };
+
+  const initWelcomeChat = (mother, lang = language, prependNotice = null) => {
     const isTa = lang === 'ta';
     const motherName = mother ? ` ${mother.name}` : '';
-    const welcomeMsg = isTa
+    const mainText = isTa
       ? `வணக்கம்${motherName}! MOTHER+ இற்கு நல்வரவு 🌸\nஒவ்வொரு தாய்க்கும், ஒவ்வொரு அடியிலும் பாதுகாப்பு.\n\nகீழே உள்ள விருப்பங்களில் ஒன்றைத் தேர்ந்தெடுக்கவும் அல்லது எண்ணைத் தட்டச்சு செய்யவும்:`
       : `Hello${motherName}! Welcome to MOTHER+ 🌸\nSupporting every mother, every step.\n\nSelect one of the quick options below or reply with a number:`;
 
+    const welcomeMsg = prependNotice ? `${prependNotice}\n\n${mainText}` : mainText;
+
     setMessages([
       {
-        id: 'msg-welcome',
+        id: `msg-welcome-${Date.now()}`,
         sender: 'bot',
         text: welcomeMsg,
         time: getCurrentTime(),
@@ -99,7 +130,8 @@ export function WhatsAppPage({ onNavigate }) {
           { id: '3', label: isTa ? '3. ஆரோக்கியக் குறிப்புகள்' : '3. Health Tips' },
           { id: '4', label: isTa ? '4. நினைவூட்டல்கள்' : '4. Reminders' },
           { id: '5', label: isTa ? '5. தினசரி பரிசோதனை' : '5. Daily Health Check' },
-          { id: '6', label: isTa ? '6. உதவி / அவசர எண்' : '6. Help / Emergency' }
+          { id: '6', label: isTa ? '6. உதவி / அவசர எண்' : '6. Help / Emergency' },
+          { id: '7', label: isTa ? '🌐 7. மொழியை மாற்று / Change Language' : '🌐 7. Change Language / மொழியை மாற்று' }
         ]
       }
     ]);
@@ -148,6 +180,27 @@ export function WhatsAppPage({ onNavigate }) {
     addUserMessage(text);
     setInputText('');
 
+    // Handle language selection state
+    if (chatState === 'LANG_SELECT') {
+      const lower = text.toLowerCase();
+      if (text === '1' || lower === 'en' || lower.includes('english') || text === 'lang_en') {
+        handleSelectLanguage('en');
+        return;
+      }
+      if (text === '2' || lower === 'ta' || lower.includes('tamil') || lower.includes('தமிழ்') || text === 'lang_ta') {
+        handleSelectLanguage('ta');
+        return;
+      }
+      addBotMessage(
+        `Please choose your language / தயவுசெய்து மொழியைத் தேர்ந்தெடுக்கவும்:\n\n1. English\n2. தமிழ்`,
+        [
+          { id: 'lang_en', label: '1. English' },
+          { id: 'lang_ta', label: '2. தமிழ்' }
+        ]
+      );
+      return;
+    }
+
     // Handle interactive registration state machine
     if (chatState === 'REGISTERING') {
       handleRegistrationStep(text);
@@ -183,18 +236,24 @@ export function WhatsAppPage({ onNavigate }) {
       return;
     }
 
-    if (text === '6' || lower.includes('help') || lower.includes('emergency') || lower.includes('உதவி')) {
+    if (text === '6' || lower.includes('help') || lower.includes('emergency') || lower.includes('உதவி') || lower.includes('அவசரம்')) {
       handleHelpQuery();
+      return;
+    }
+
+    if (text === '7' || lower.includes('lang') || lower.includes('language') || lower.includes('மொழி') || lower.includes('மாற்று') || text === 'change_lang') {
+      showLanguageSelectionPrompt();
       return;
     }
 
     // Default response
     const defaultReply = isTa
-      ? `MOTHER+ பாட்: தயவுசெய்து மெனுவிலிருந்து ஒரு விருப்பத்தைத் தேர்ந்தெடுக்கவும் (1-6) அல்லது "பரிசோதனை" என தட்டச்சு செய்யவும்.`
-      : `MOTHER+ Bot: Please select an option from the menu (1 to 6) or reply "Daily Health Check".`;
+      ? `MOTHER+ பாட்: தயவுசெய்து மெனுவிலிருந்து ஒரு விருப்பத்தைத் தேர்ந்தெடுக்கவும் (1-7) அல்லது "பரிசோதனை" என தட்டச்சு செய்யவும்.`
+      : `MOTHER+ Bot: Please select an option from the menu (1 to 7) or reply "Daily Health Check".`;
     addBotMessage(defaultReply, [
-      { id: '5', label: isTa ? 'தினசரி பரிசோதனை' : 'Daily Health Check' },
-      { id: '2', label: isTa ? 'என் கர்ப்ப நிலை' : 'My Pregnancy' }
+      { id: '5', label: isTa ? '5. தினசரி பரிசோதனை' : '5. Daily Health Check' },
+      { id: '2', label: isTa ? '2. என் கர்ப்ப நிலை' : '2. My Pregnancy' },
+      { id: '7', label: isTa ? '🌐 7. மொழியை மாற்று' : '🌐 7. Change Language' }
     ]);
   };
 
@@ -424,9 +483,9 @@ export function WhatsAppPage({ onNavigate }) {
 
       if (evalData.level === 'RED') {
         // RED WARNING DISPLAY
-        const redMsg = isTa ? evalData.tamilMessage : evalData.message;
+        const redMsg = isTa ? (evalData.tamilMessage || evalData.message) : (evalData.message || evalData.tamilMessage);
         const emergencyNotice = isTa
-          ? `🚨 அவசர நடவடிக்கை:\nதயவுசெய்து அடுத்த பரிசோதனை நாள் வரை காத்திருக்க வேண்டாம். உடனடியாக 108 ஐ அழைக்கவும் அல்லது அருகிலுள்ள அவசர மருத்துவமனைக்குச் செல்லவும்.\n\n*சுகாதாரப் பணியாளருக்கு (ANM/ASHA) அவசர எச்சரிக்கை அனுப்பப்பட்டுள்ளது.*`
+          ? `🚨 அவசர நடவடிக்கை:\nதயவுசெய்து அடுத்த பரிசோதனை நாள் வரை காத்திருக்க வேண்டாம். உடனடியாக 108 ஐ அழைக்கவும் அல்லது அருகிலுள்ள அவசர மருத்துவமனைக்குச் செல்லவும்.\n\n*சுகாதாரப் பணியாளருக்கு (${selectedMother?.healthcareWorker || 'ANM/ASHA'}) அவசர எச்சரிக்கை அனுப்பப்பட்டுள்ளது.*`
           : `🚨 URGENT ACTION REQUIRED:\nDo NOT wait for a scheduled appointment. Please call 108 or go to the nearest hospital emergency unit immediately.\n\n*An urgent alert has been dispatched to your healthcare worker (${selectedMother?.healthcareWorker || 'ANM'}).*`;
 
         addBotMessage(`${redMsg}\n\n${emergencyNotice}`, [
@@ -435,22 +494,22 @@ export function WhatsAppPage({ onNavigate }) {
 
         // Update local mother status
         if (selectedMother) {
-          setSelectedMother((prev) => ({ ...prev, riskLevel: 'RED' }));
+          setSelectedMother((prev) => (prev ? { ...prev, riskLevel: 'RED' } : null));
         }
       } else if (evalData.level === 'YELLOW') {
-        const yellowMsg = isTa ? evalData.tamilMessage : evalData.message;
+        const yellowMsg = isTa ? (evalData.tamilMessage || evalData.message) : (evalData.message || evalData.tamilMessage);
         addBotMessage(yellowMsg, [
-          { id: '4', label: isTa ? 'நினைவூட்டல் பார்க்க' : 'View Reminders' },
+          { id: '4', label: isTa ? '4. நினைவூட்டல் பார்க்க' : '4. View Reminders' },
           { id: 'menu', label: isTa ? 'முதன்மை மெனு' : 'Main Menu' }
         ], 200, { riskLevel: 'YELLOW' });
 
         if (selectedMother && selectedMother.riskLevel !== 'RED') {
-          setSelectedMother((prev) => ({ ...prev, riskLevel: 'YELLOW' }));
+          setSelectedMother((prev) => (prev ? { ...prev, riskLevel: 'YELLOW' } : null));
         }
       } else {
-        const greenMsg = isTa ? evalData.tamilMessage : evalData.message;
+        const greenMsg = isTa ? (evalData.tamilMessage || evalData.message) : (evalData.message || evalData.tamilMessage);
         addBotMessage(greenMsg, [
-          { id: '3', label: isTa ? 'ஆரோக்கியக் குறிப்புகள்' : 'Health Tips' },
+          { id: '3', label: isTa ? '3. ஆரோக்கியக் குறிப்புகள்' : '3. Health Tips' },
           { id: 'menu', label: isTa ? 'முதன்மை மெனு' : 'Main Menu' }
         ], 200, { riskLevel: 'GREEN' });
       }
@@ -472,6 +531,7 @@ export function WhatsAppPage({ onNavigate }) {
       : `🚨 Emergency Contacts & Support:\n\n• National Emergency Ambulance: 108\n• Pregnant Mother Helpline: 102\n• Primary Health Centre: ${selectedMother?.healthcareFacility || 'Local PHC'}\n• Assigned Worker: ${selectedMother?.healthcareWorker || 'ANM/ASHA'}\n\nIn case of critical danger signs, do not wait for an online response. Seek hospital care immediately.`;
 
     addBotMessage(msg, [
+      { id: '5', label: isTa ? '5. தினசரி பரிசோதனை' : '5. Daily Health Check' },
       { id: 'menu', label: isTa ? 'முதன்மை மெனு' : 'Main Menu' }
     ]);
   };
@@ -479,8 +539,7 @@ export function WhatsAppPage({ onNavigate }) {
   // Switch language button inside chat
   const handleToggleLangInChat = () => {
     const newLang = language === 'en' ? 'ta' : 'en';
-    setLanguage(newLang);
-    initWelcomeChat(selectedMother, newLang);
+    handleSelectLanguage(newLang);
   };
 
   return (
@@ -510,14 +569,14 @@ export function WhatsAppPage({ onNavigate }) {
         <div className="flex items-center gap-2">
           <button
             onClick={startRegistrationFlow}
-            className="px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-xl text-xs font-bold transition-colors whitespace-nowrap"
+            className="px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-xl text-xs font-bold transition-colors whitespace-nowrap cursor-pointer"
           >
             {t('newRegistrationOption') || '+ New Registration'}
           </button>
           <button
-            onClick={() => initWelcomeChat(selectedMother, language)}
-            className="p-1.5 text-slate-500 hover:text-slate-800 rounded-lg hover:bg-slate-100"
-            title="Reset Chat Session"
+            onClick={() => showLanguageSelectionPrompt()}
+            className="p-1.5 text-slate-500 hover:text-slate-800 rounded-lg hover:bg-slate-100 cursor-pointer"
+            title={language === 'ta' ? 'மொழியைத் தேர்ந்தெடுக்க' : 'Choose Language'}
           >
             <RotateCcw className="h-4 w-4" />
           </button>
@@ -564,11 +623,11 @@ export function WhatsAppPage({ onNavigate }) {
             {/* Quick in-chat language toggle */}
             <button
               onClick={handleToggleLangInChat}
-              className="px-2 py-1 bg-emerald-800 hover:bg-emerald-900 rounded-lg text-[11px] font-bold text-white flex items-center gap-1 border border-emerald-600"
-              title="Switch Language"
+              className="px-2.5 py-1 bg-emerald-800 hover:bg-emerald-900 rounded-lg text-[11px] font-bold text-white flex items-center gap-1 border border-emerald-600 cursor-pointer shadow-xs"
+              title={language === 'en' ? 'தமிழில் மாற்றவும்' : 'Switch to English'}
             >
-              <Languages className="h-3 w-3" />
-              <span>{language === 'en' ? 'தமிழ்' : 'EN'}</span>
+              <Languages className="h-3.5 w-3.5" />
+              <span>{language === 'en' ? 'தமிழ்' : 'English'}</span>
             </button>
           </div>
         </div>
@@ -624,7 +683,7 @@ export function WhatsAppPage({ onNavigate }) {
                     <div className="mt-3 pt-2 border-t border-slate-200 space-y-2">
                       <div className="text-[11px] font-bold text-rose-700 uppercase tracking-wider flex items-center gap-1">
                         <ShieldAlert className="h-3.5 w-3.5" />
-                        Danger Signs (RED Level)
+                        {language === 'ta' ? 'ஆபத்து அறிகுறிகள் (சிவப்பு நிலை)' : 'Danger Signs (RED Level)'}
                       </div>
                       <div className="space-y-1">
                         {availableSymptoms.dangerSigns?.map((ds) => {
@@ -634,7 +693,7 @@ export function WhatsAppPage({ onNavigate }) {
                               key={ds.id}
                               type="button"
                               onClick={() => toggleSymptomSelection(ds.id)}
-                              className={`w-full text-left p-1.5 rounded-lg text-xs flex items-center justify-between border transition-all ${
+                              className={`w-full text-left p-1.5 rounded-lg text-xs flex items-center justify-between border transition-all cursor-pointer ${
                                 isChecked
                                   ? 'bg-rose-100 border-rose-400 text-rose-900 font-semibold'
                                   : 'bg-white border-slate-200 hover:bg-slate-50 text-slate-700'
@@ -648,7 +707,7 @@ export function WhatsAppPage({ onNavigate }) {
                       </div>
 
                       <div className="text-[11px] font-bold text-amber-700 uppercase tracking-wider pt-2 flex items-center gap-1">
-                        <span>Mild Pregnancy Discomforts (YELLOW Level)</span>
+                        <span>{language === 'ta' ? 'லேசான கர்ப்ப அசௌகரியங்கள் (மஞ்சள் நிலை)' : 'Mild Pregnancy Discomforts (YELLOW Level)'}</span>
                       </div>
                       <div className="space-y-1">
                         {availableSymptoms.mildDiscomforts?.map((md) => {
@@ -658,7 +717,7 @@ export function WhatsAppPage({ onNavigate }) {
                               key={md.id}
                               type="button"
                               onClick={() => toggleSymptomSelection(md.id)}
-                              className={`w-full text-left p-1.5 rounded-lg text-xs flex items-center justify-between border transition-all ${
+                              className={`w-full text-left p-1.5 rounded-lg text-xs flex items-center justify-between border transition-all cursor-pointer ${
                                 isChecked
                                   ? 'bg-amber-100 border-amber-400 text-amber-900 font-semibold'
                                   : 'bg-white border-slate-200 hover:bg-slate-50 text-slate-700'
@@ -673,9 +732,9 @@ export function WhatsAppPage({ onNavigate }) {
 
                       <button
                         onClick={() => submitTriageReport(msg.extraData.feelingType, selectedSymptoms)}
-                        className="w-full mt-2 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow-xs transition-colors"
+                        className="w-full mt-2 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow-xs transition-colors cursor-pointer"
                       >
-                        {t('submitCheckinBtn') || 'Submit Health Check'} ({selectedSymptoms.length} selected)
+                        {language === 'ta' ? 'பரிசோதனையை சமர்ப்பிக்கவும்' : 'Submit Health Check'} ({selectedSymptoms.length} {language === 'ta' ? 'தேர்வு செய்யப்பட்டது' : 'selected'})
                       </button>
                     </div>
                   )}
@@ -698,6 +757,15 @@ export function WhatsAppPage({ onNavigate }) {
                             handleGeneralFeelingSelect(opt.id);
                           } else if (opt.id === 'menu') {
                             initWelcomeChat(selectedMother, language);
+                          } else if (opt.id === 'lang_en') {
+                            addUserMessage('1. English');
+                            handleSelectLanguage('en');
+                          } else if (opt.id === 'lang_ta') {
+                            addUserMessage('2. தமிழ்');
+                            handleSelectLanguage('ta');
+                          } else if (opt.id === '7' || opt.id === 'change_lang') {
+                            addUserMessage(language === 'ta' ? '🌐 மொழியை மாற்று' : '🌐 Change Language');
+                            showLanguageSelectionPrompt();
                           } else {
                             handleSendMessage(opt.id);
                           }

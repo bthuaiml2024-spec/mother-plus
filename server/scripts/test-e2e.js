@@ -36,10 +36,11 @@ async function runE2ETests() {
 
   // 4. Maternal Registration
   const lmp24w = new Date(Date.now() - 24 * 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+  const uniqueDigits = Date.now().toString().slice(-8);
   const newMotherPayload = {
     name: 'Shanthi Devi',
     age: 25,
-    phone: '+91 99999 11111',
+    phone: `+91 98${uniqueDigits}`,
     preferredLanguage: 'ta',
     lmpDate: lmp24w,
     healthcareFacility: 'Poonamallee CHC',
